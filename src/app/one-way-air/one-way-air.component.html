@@ -19,6 +19,7 @@
                     name="journeyType"
                     formControlName="journeyType"
                     tabindex="0"
+                    autofocus
                   />
                   <label for="oneway">One Way</label>
                   <div class="form-label-group mb-3">
@@ -44,7 +45,7 @@
                     <label for="multicity">Multi city</label>
                   </div>
                 </div>
-              </div> 
+              </div>
               <div class="col-sm-12 col-md-4 col-lg-4">
                 <div class="form-group">
                   <label for="departureDate" class="form-label"
@@ -54,26 +55,7 @@
                     id="departureDate"
                     name="departureDate"
                     placeholder="MM-DD-YYYY"
-                    formControlName="departureDate"                    
-                    dateFormat="mm-dd-yy"
-                    [monthNavigator]="true"
-                    [yearNavigator]="true"
-                    yearRange="1900:2100"
-                    [showIcon]="true"                    
-                  >
-                  </p-calendar>
-                </div>
-              </div> 
-              <div class="col-sm-12 col-md-4 col-lg-4">
-                <div class="form-group">
-                  <label for="returnDate" class="form-label"
-                    >Return Date</label
-                  >
-                  <p-calendar
-                    id="returnDate"
-                    name="returnDate"
-                    placeholder="MM-DD-YYYY"
-                    formControlName="returnDate"                    
+                    formControlName="departureDate"
                     dateFormat="mm-dd-yy"
                     [monthNavigator]="true"
                     [yearNavigator]="true"
@@ -82,7 +64,77 @@
                   >
                   </p-calendar>
                 </div>
-              </div>            
+              </div>
+              <div class="col-sm-12 col-md-4 col-lg-4">
+                <div class="form-group">
+                  <label for="returnDate" class="form-label">Return Date</label>
+                  <p-calendar
+                    id="returnDate"
+                    name="returnDate"
+                    placeholder="MM-DD-YYYY"
+                    formControlName="returnDate"
+                    dateFormat="mm-dd-yy"
+                    [monthNavigator]="true"
+                    [yearNavigator]="true"
+                    yearRange="1900:2100"
+                    [showIcon]="true"
+                  >
+                  </p-calendar>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 col-md-4 col-lg-4">
+                <div class="form-group">
+                  <label for="noOfAdult" class="form-label"
+                    >Adults (12+ Yrs)</label
+                  >
+                  <input
+                    id="noOfAdult"
+                    name="noOfAdult"
+                    type="number"
+                    class="form-control"
+                    autocomplete="off"                    
+                    formControlName="noOfAdult"
+                    tabindex="5"                                        
+                    trimmed
+                  />
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-4 col-lg-4">
+                <div class="form-group">
+                  <label for="noOfChild" class="form-label"
+                    >Child (2-11 Yrs)</label
+                  >
+                  <input
+                    id="noOfChild"
+                    name="noOfChild"
+                    type="number"
+                    class="form-control"
+                    autocomplete="off"                    
+                    formControlName="noOfChild"
+                    tabindex="6"                                        
+                    trimmed
+                  />
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-4 col-lg-4">
+                <div class="form-group">
+                  <label for="noOfInfant" class="form-label"
+                    >Infant (0-2 Yrs)</label
+                  >
+                  <input
+                    id="noOfInfant"
+                    name="noOfInfant"
+                    type="number"
+                    class="form-control"
+                    autocomplete="off"                    
+                    formControlName="noOfInfant"
+                    tabindex="7"                                        
+                    trimmed
+                  />
+                </div>
+              </div>
             </div>
             <button
               class="btn btn-lg btn-primary btn-block text-uppercase"

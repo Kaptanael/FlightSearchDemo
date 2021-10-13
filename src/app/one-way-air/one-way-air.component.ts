@@ -28,10 +28,13 @@ export class OneWayAirComponent implements OnInit {
       journeyType: ['', [Validators.required]],
       departureDate: [''],
       returnDate: [''],
+      noOfAdult: ['0'],
+      noOfChild: ['0'],
+      noOfInfant: ['0'],
     });
   }
 
-  getClientFormattedDate(value:string): string {
+  getClientFormattedDate(value: string): string {
     if (value) {
       let dateObj = new Date(value);
       let month = dateObj.getUTCMonth() + 1;
@@ -55,9 +58,21 @@ export class OneWayAirComponent implements OnInit {
       ? this.getClientFormattedDate(
           this.flightFormGroup.controls.returnDate.value
         )
-      : '';;
+      : '';
+    let noOfAdult = this.flightFormGroup.controls.noOfAdult.value
+      ? +this.flightFormGroup.controls.noOfAdult.value
+      : 0;
+    let noOfChild = this.flightFormGroup.controls.noOfChild.value
+      ? +this.flightFormGroup.controls.noOfChild.value
+      : 0;
+    let noOfInfant = this.flightFormGroup.controls.noOfInfant.value
+      ? +this.flightFormGroup.controls.noOfInfant.value
+      : 0;
     console.log(departureDate);
     console.log(returnDate);
+    console.log(noOfAdult);
+    console.log(noOfChild);
+    console.log(noOfInfant);
     let airSearchModel = {
       JourneyType: journeyType,
       Origin: 'DAC',
@@ -65,9 +80,9 @@ export class OneWayAirComponent implements OnInit {
       DepartureDate: departureDate,
       ReturnDate: returnDate,
       ClassType: 'Economy',
-      NoOfInfant: 0,
-      NoOfChildren: 0,
-      NoOfAdult: 1,
+      NoOfInfant: noOfInfant,
+      NoOfChildren: noOfChild,
+      NoOfAdult: noOfAdult,
     };
     this.oneWayAirService.postOneWayAir(airSearchModel).subscribe(
       (response) => {
