@@ -1,0 +1,105 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card card-signin my-5">
+        <div class="card-header">Flight Search</div>
+        <form
+          class="form-signin"
+          [formGroup]="flightFormGroup"
+          (ngSubmit)="onFlightSubmit()"
+        >
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-12 col-md-4 col-lg-4">
+                <div class="form-label-group mb-3">
+                  <input
+                    id="oneway"
+                    type="radio"
+                    value="1"
+                    name="journeyType"
+                    formControlName="journeyType"
+                    tabindex="0"
+                  />
+                  <label for="oneway">One Way</label>
+                  <div class="form-label-group mb-3">
+                    <input
+                      id="roundtrip"
+                      type="radio"
+                      value="2"
+                      name="journeyType"
+                      formControlName="journeyType"
+                      tabindex="1"
+                    />
+                    <label for="roundtrip">Round Trip</label>
+                  </div>
+                  <div class="form-label-group mb-3">
+                    <input
+                      id="multicity"
+                      type="radio"
+                      value="3"
+                      name="journeyType"
+                      formControlName="journeyType"
+                      tabindex="2"
+                    />
+                    <label for="multicity">Multi city</label>
+                  </div>
+                </div>
+              </div> 
+              <div class="col-sm-12 col-md-4 col-lg-4">
+                <div class="form-group">
+                  <label for="departureDate" class="form-label"
+                    >Departure Date</label
+                  >
+                  <p-calendar
+                    id="departureDate"
+                    name="departureDate"
+                    placeholder="MM-DD-YYYY"
+                    formControlName="departureDate"                    
+                    dateFormat="mm-dd-yy"
+                    [monthNavigator]="true"
+                    [yearNavigator]="true"
+                    yearRange="1900:2100"
+                    [showIcon]="true"                    
+                  >
+                  </p-calendar>
+                </div>
+              </div> 
+              <div class="col-sm-12 col-md-4 col-lg-4">
+                <div class="form-group">
+                  <label for="returnDate" class="form-label"
+                    >Return Date</label
+                  >
+                  <p-calendar
+                    id="returnDate"
+                    name="returnDate"
+                    placeholder="MM-DD-YYYY"
+                    formControlName="returnDate"                    
+                    dateFormat="mm-dd-yy"
+                    [monthNavigator]="true"
+                    [yearNavigator]="true"
+                    yearRange="1900:2100"
+                    [showIcon]="true"
+                  >
+                  </p-calendar>
+                </div>
+              </div>            
+            </div>
+            <button
+              class="btn btn-lg btn-primary btn-block text-uppercase"
+              type="submit"
+              tabindex="10"
+              [disabled]="!flightFormGroup.valid"
+            >
+              Search
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <code>
+      <pre>{{ searchResult | json }}</pre>
+    </code>
+  </div>
+</div>

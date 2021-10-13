@@ -1,0 +1,32 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+      <div class="card card-signin my-5">
+        <div class="card-header">Sign In</div>
+        <div class="card-body">
+          <form class="form-signin" [formGroup]="loginFormGroup" (ngSubmit)="onLogin()" novalidate>
+            <div class="form-label-group mb-3">
+              <label for="username">Email</label>
+              <input type="text" id="username" name="username" class="form-control" placeholder="Username" tabindex="1"
+                     formControlName="username" required autofocus>
+            </div>    
+            <div class="form-label-group mb-3">
+              <label for="username">Password</label>
+              <input type="password" id="password" name="password" class="form-control" placeholder="Password" tabindex="1"
+                     formControlName="password" required>
+            </div>                    
+            <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" tabindex="2">
+              Login
+            </button>
+            <hr class="my-4">            
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p-toast key="toastKey1"></p-toast>
+
+
+
