@@ -28,6 +28,8 @@ export class OneWayAirComponent implements OnInit {
       journeyType: ['', [Validators.required]],
       departureDate: [''],
       returnDate: [''],
+      flyingFrom: [''],
+      flyingTo: [''],
       noOfAdult: ['0'],
       noOfChild: ['0'],
       noOfInfant: ['0'],

@@ -11,7 +11,7 @@
           <div class="card-body">
             <div class="row">
               <div class="col-sm-12 col-md-4 col-lg-4">
-                <div class="form-label-group mb-3">
+                <div class="form-check">
                   <input
                     id="oneway"
                     type="radio"
@@ -19,33 +19,71 @@
                     name="journeyType"
                     formControlName="journeyType"
                     tabindex="0"
-                    autofocus
+                    class="form-check-input"
                   />
-                  <label for="oneway">One Way</label>
-                  <div class="form-label-group mb-3">
-                    <input
-                      id="roundtrip"
-                      type="radio"
-                      value="2"
-                      name="journeyType"
-                      formControlName="journeyType"
-                      tabindex="1"
-                    />
-                    <label for="roundtrip">Round Trip</label>
-                  </div>
-                  <div class="form-label-group mb-3">
-                    <input
-                      id="multicity"
-                      type="radio"
-                      value="3"
-                      name="journeyType"
-                      formControlName="journeyType"
-                      tabindex="2"
-                    />
-                    <label for="multicity">Multi city</label>
-                  </div>
+                  <label for="oneway" class="form-check-label">One Way</label>
+                </div>
+                <div class="form-check">
+                  <input
+                    id="roundtrip"
+                    type="radio"
+                    value="2"
+                    name="journeyType"
+                    formControlName="journeyType"
+                    tabindex="1"
+                    class="form-check-input"
+                  />
+                  <label for="roundtrip" class="form-check-label"
+                    >Round Trip</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    id="multicity"
+                    type="radio"
+                    value="3"
+                    name="journeyType"
+                    formControlName="journeyType"
+                    tabindex="2"
+                    class="form-check-input"
+                  />
+                  <label for="multicity" class="form-check-label"
+                    >Multi city</label
+                  >
                 </div>
               </div>
+              <div class="col-sm-12 col-md-4 col-lg-4">
+                <div class="form-group">
+                  <label for="flyingFrom" class="form-label">Flying From</label>
+                  <input
+                    id="flyingFrom"
+                    name="flyingFrom"
+                    type="text"
+                    class="form-control"
+                    autocomplete="off"
+                    formControlName="flyingFrom"
+                    tabindex="3"
+                    trimmed                    
+                  />
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-4 col-lg-4">
+                <div class="form-group">
+                  <label for="flyingTo" class="form-label">Flying To</label>
+                  <input
+                    id="flyingTo"
+                    name="flyingTo"
+                    type="text"
+                    class="form-control"
+                    autocomplete="off"
+                    formControlName="flyingTo"
+                    tabindex="4"
+                    trimmed                    
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row">
               <div class="col-sm-12 col-md-4 col-lg-4">
                 <div class="form-group">
                   <label for="departureDate" class="form-label"
@@ -61,6 +99,7 @@
                     [yearNavigator]="true"
                     yearRange="1900:2100"
                     [showIcon]="true"
+                    [tabindex]="5"                    
                   >
                   </p-calendar>
                 </div>
@@ -78,6 +117,7 @@
                     [yearNavigator]="true"
                     yearRange="1900:2100"
                     [showIcon]="true"
+                    [tabindex]="6"                    
                   >
                   </p-calendar>
                 </div>
@@ -94,9 +134,9 @@
                     name="noOfAdult"
                     type="number"
                     class="form-control"
-                    autocomplete="off"                    
+                    autocomplete="off"
                     formControlName="noOfAdult"
-                    tabindex="5"                                        
+                    tabindex="7"
                     trimmed
                   />
                 </div>
@@ -111,9 +151,9 @@
                     name="noOfChild"
                     type="number"
                     class="form-control"
-                    autocomplete="off"                    
+                    autocomplete="off"
                     formControlName="noOfChild"
-                    tabindex="6"                                        
+                    tabindex="8"
                     trimmed
                   />
                 </div>
@@ -128,22 +168,26 @@
                     name="noOfInfant"
                     type="number"
                     class="form-control"
-                    autocomplete="off"                    
+                    autocomplete="off"
                     formControlName="noOfInfant"
-                    tabindex="7"                                        
+                    tabindex="9"
                     trimmed
                   />
                 </div>
               </div>
             </div>
-            <button
-              class="btn btn-lg btn-primary btn-block text-uppercase"
-              type="submit"
-              tabindex="10"
-              [disabled]="!flightFormGroup.valid"
-            >
-              Search
-            </button>
+            <div class="row">
+              <div class="col-sm-12 col-md-4 col-lg-4">
+                <button
+                  class="btn btn-lg btn-primary btn-block text-uppercase"
+                  type="submit"
+                  tabindex="10"
+                  [disabled]="!flightFormGroup.valid"
+                >
+                  Search
+                </button>
+              </div>
+            </div>
           </div>
         </form>
       </div>
