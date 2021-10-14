@@ -28,8 +28,8 @@ export class OneWayAirComponent implements OnInit {
       journeyType: ['', [Validators.required]],
       departureDate: [''],
       returnDate: [''],
-      flyingFrom: [''],
-      flyingTo: [''],
+      flyingFrom: ['DAC'],
+      flyingTo: ['CCU'],
       noOfAdult: ['0'],
       noOfChild: ['0'],
       noOfInfant: ['0'],
@@ -70,15 +70,13 @@ export class OneWayAirComponent implements OnInit {
     let noOfInfant = this.flightFormGroup.controls.noOfInfant.value
       ? +this.flightFormGroup.controls.noOfInfant.value
       : 0;
-    console.log(departureDate);
-    console.log(returnDate);
-    console.log(noOfAdult);
-    console.log(noOfChild);
-    console.log(noOfInfant);
+    let flyingFrom = this.flightFormGroup.controls.flyingFrom.value;
+    let flyingTo = this.flightFormGroup.controls.flyingTo.value;
+    
     let airSearchModel = {
       JourneyType: journeyType,
-      Origin: 'DAC',
-      Destination: 'CCU',
+      Origin: flyingFrom,
+      Destination: flyingTo,
       DepartureDate: departureDate,
       ReturnDate: returnDate,
       ClassType: 'Economy',
@@ -86,6 +84,7 @@ export class OneWayAirComponent implements OnInit {
       NoOfChildren: noOfChild,
       NoOfAdult: noOfAdult,
     };
+    console.log(airSearchModel);
     this.oneWayAirService.postOneWayAir(airSearchModel).subscribe(
       (response) => {
         if (response) {
