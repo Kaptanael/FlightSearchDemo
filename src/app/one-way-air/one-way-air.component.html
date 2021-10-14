@@ -178,10 +178,40 @@
             </div>
             <div class="row">
               <div class="col-sm-12 col-md-4 col-lg-4">
+                <div class="form-check">
+                  <input
+                    id="economy"
+                    type="radio"
+                    value="Economy"
+                    name="classType"
+                    formControlName="classType"
+                    tabindex="10"
+                    class="form-check-input"
+                  />
+                  <label for="economy" class="form-check-label">Economy</label>
+                </div>
+                <div class="form-check">
+                  <input
+                    id="business"
+                    type="radio"
+                    value="Business"
+                    name="classType"
+                    formControlName="classType"
+                    tabindex="11"
+                    class="form-check-input"
+                  />
+                  <label for="business" class="form-check-label"
+                    >Business</label
+                  >
+                </div>                
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 col-md-4 col-lg-4">
                 <button
                   class="btn btn-lg btn-primary btn-block text-uppercase"
                   type="submit"
-                  tabindex="10"
+                  tabindex="12"
                   [disabled]="!flightFormGroup.valid"
                 >
                   Search

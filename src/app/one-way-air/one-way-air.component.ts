@@ -33,6 +33,7 @@ export class OneWayAirComponent implements OnInit {
       noOfAdult: ['0'],
       noOfChild: ['0'],
       noOfInfant: ['0'],
+      classType: ['', [Validators.required]],
     });
   }
 
@@ -72,6 +73,7 @@ export class OneWayAirComponent implements OnInit {
       : 0;
     let flyingFrom = this.flightFormGroup.controls.flyingFrom.value;
     let flyingTo = this.flightFormGroup.controls.flyingTo.value;
+    let classType = this.flightFormGroup.controls.classType.value;
     
     let airSearchModel = {
       JourneyType: journeyType,
@@ -79,7 +81,7 @@ export class OneWayAirComponent implements OnInit {
       Destination: flyingTo,
       DepartureDate: departureDate,
       ReturnDate: returnDate,
-      ClassType: 'Economy',
+      ClassType: classType,
       NoOfInfant: noOfInfant,
       NoOfChildren: noOfChild,
       NoOfAdult: noOfAdult,
