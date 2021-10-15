@@ -65,9 +65,10 @@ export class OneWayAirComponent implements OnInit {
     }
   };
 
-  changeJourneyType(e: any) {
+  changeJourneyType(e: any) {    
     this.clearFormArray(this.cityArray);
     this.addCity(); 
+    this.searchResult = {};
     if (e.target.value === '1') {      
       this.isOneway = true;
       this.isRoundTrip = false;
