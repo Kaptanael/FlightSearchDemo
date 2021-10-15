@@ -20,6 +20,7 @@
                     formControlName="journeyType"
                     tabindex="0"
                     class="form-check-input"
+                    (change)="changeJourneyType($event)"
                   />
                   <label for="oneway" class="form-check-label">One Way</label>
                 </div>
@@ -32,6 +33,7 @@
                     formControlName="journeyType"
                     tabindex="1"
                     class="form-check-input"
+                    (change)="changeJourneyType($event)"
                   />
                   <label for="roundtrip" class="form-check-label"
                     >Round Trip</label
@@ -46,81 +48,105 @@
                     formControlName="journeyType"
                     tabindex="2"
                     class="form-check-input"
+                    (change)="changeJourneyType($event)"
                   />
                   <label for="multicity" class="form-check-label"
                     >Multi city</label
                   >
                 </div>
-              </div>              
+              </div>
             </div>
-            <div class="row">
-              <div class="col-sm-9 col-md-3 col-lg-3">
-                <div class="form-group">
-                  <label for="flyingFrom" class="form-label">Flying From</label>
-                  <input
-                    id="flyingFrom"
-                    name="flyingFrom"
-                    type="text"
-                    class="form-control"
-                    autocomplete="off"
-                    formControlName="flyingFrom"
-                    tabindex="3"
-                    trimmed                    
-                  />
-                </div>
+            <div formArrayName="city">
+              <div                
+                *ngFor="let group of cityArray.controls; let i = index"
+                [formGroupName]="i"
+              >                
+                <div class="row">
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label for="flyingFrom" class="form-label"
+                        >Flying From</label
+                      >
+                      <input
+                        id="flyingFrom"
+                        name="flyingFrom"
+                        type="text"
+                        class="form-control"
+                        autocomplete="off"
+                        formControlName="flyingFrom"
+                        tabindex="3"
+                        trimmed
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label for="flyingTo" class="form-label">Flying To</label>
+                      <input
+                        id="flyingTo"
+                        name="flyingTo"
+                        type="text"
+                        class="form-control"
+                        autocomplete="off"
+                        formControlName="flyingTo"
+                        tabindex="4"
+                        trimmed
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label for="departureDate" class="form-label"
+                        >Departure Date</label
+                      >
+                      <p-calendar
+                        id="departureDate"
+                        name="departureDate"
+                        placeholder="MM-DD-YYYY"
+                        formControlName="departureDate"
+                        dateFormat="mm-dd-yy"
+                        [monthNavigator]="true"
+                        [yearNavigator]="true"
+                        yearRange="1900:2100"
+                        [showIcon]="true"
+                        [tabindex]="5"
+                      >
+                      </p-calendar>
+                    </div>
+                  </div>
+                  <div class="col-md-3" *ngIf="isRoundTrip">
+                    <div class="form-group">
+                      <label for="returnDate" class="form-label"
+                        >Return Date</label
+                      >
+                      <p-calendar
+                        id="returnDate"
+                        name="returnDate"
+                        placeholder="MM-DD-YYYY"
+                        formControlName="returnDate"
+                        dateFormat="mm-dd-yy"
+                        [monthNavigator]="true"
+                        [yearNavigator]="true"
+                        yearRange="1900:2100"
+                        [showIcon]="true"
+                        [tabindex]="6"
+                      >
+                      </p-calendar>
+                    </div>
+                  </div>
+                  <div class="col-md-1" style="margin-top: 36px;" *ngIf="cityArray.length > 1 && i > 0 && isMultiCity">
+                    <button type="button" (click)="removeCity(i)">
+                      <i class="fa fa-minus" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>                
               </div>
-              <div class="col-sm-9 col-md-3 col-lg-3">
-                <div class="form-group">
-                  <label for="flyingTo" class="form-label">Flying To</label>
-                  <input
-                    id="flyingTo"
-                    name="flyingTo"
-                    type="text"
-                    class="form-control"
-                    autocomplete="off"
-                    formControlName="flyingTo"
-                    tabindex="4"
-                    trimmed                    
-                  />
-                </div>
-              </div>
-              <div class="col-sm-9 col-md-3 col-lg-3">
-                <div class="form-group">
-                  <label for="departureDate" class="form-label"
-                    >Departure Date</label
-                  >
-                  <p-calendar
-                    id="departureDate"
-                    name="departureDate"
-                    placeholder="MM-DD-YYYY"
-                    formControlName="departureDate"
-                    dateFormat="mm-dd-yy"
-                    [monthNavigator]="true"
-                    [yearNavigator]="true"
-                    yearRange="1900:2100"
-                    [showIcon]="true"
-                    [tabindex]="5"                    
-                  >
-                  </p-calendar>
-                </div>
-              </div>
-              <div class="col-sm-9 col-md-3 col-lg-3">
-                <div class="form-group">
-                  <label for="returnDate" class="form-label">Return Date</label>
-                  <p-calendar
-                    id="returnDate"
-                    name="returnDate"
-                    placeholder="MM-DD-YYYY"
-                    formControlName="returnDate"
-                    dateFormat="mm-dd-yy"
-                    [monthNavigator]="true"
-                    [yearNavigator]="true"
-                    yearRange="1900:2100"
-                    [showIcon]="true"
-                    [tabindex]="6"                    
-                  >
-                  </p-calendar>
-                </div>
+            </div>
+            <div class="row" *ngIf="isMultiCity">
+              <div class="col-md-12 mb-3">
+                <button type="button" (click)="addCity()">
+                  <i class="fa fa-plus" aria-hidden="true"> Add City</i>
+                </button>
               </div>
             </div>
             <div class="row">
@@ -201,9 +227,9 @@
                   <label for="business" class="form-check-label"
                     >Business</label
                   >
-                </div>                
+                </div>
               </div>
-            </div>            
+            </div>
             <div class="row">
               <div class="col-sm-12 col-md-4 col-lg-4">
                 <button

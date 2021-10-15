@@ -1,8 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { OneWayAirService } from '../_services/one-way-air.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-one-way-air',
@@ -12,6 +13,9 @@ import { OneWayAirService } from '../_services/one-way-air.service';
 export class OneWayAirComponent implements OnInit {
   flightFormGroup!: FormGroup;
   searchResult: any;
+  isOneway: boolean = false;
+  isRoundTrip: boolean = false;
+  isMultiCity: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -25,16 +29,34 @@ export class OneWayAirComponent implements OnInit {
 
   createFlightForm() {
     this.flightFormGroup = this.fb.group({
-      journeyType: ['', [Validators.required]],
-      departureDate: [''],
-      returnDate: [''],
-      flyingFrom: ['DAC'],
-      flyingTo: ['CCU'],
+      journeyType: ['1', [Validators.required]],
       noOfAdult: ['0'],
       noOfChild: ['0'],
       noOfInfant: ['0'],
-      classType: ['', [Validators.required]],
+      classType: ['Economy', [Validators.required]],
+      city: this.fb.array([this.addCityGroup()]),
     });
+  }
+
+  addCityGroup() {
+    return this.fb.group({
+      departureDate: [],
+      returnDate: [],
+      flyingFrom: ['DAC'],
+      flyingTo: ['CXB'],
+    });
+  }
+
+  addCity() {
+    this.cityArray.push(this.addCityGroup());
+  }
+
+  removeCity(index: any) {
+    this.cityArray.removeAt(index);
+  }
+
+  get cityArray() {
+    return <FormArray>this.flightFormGroup.get('city');
   }
 
   getClientFormattedDate(value: string): string {
@@ -49,19 +71,46 @@ export class OneWayAirComponent implements OnInit {
     return '';
   }
 
-  onFlightSubmit() {
+  changeJourneyType(e: any) {
+    if (e.target.value === '1') {
+      console.log(this.flightFormGroup.controls.city);
+      this.isOneway = true;
+      this.isRoundTrip = false;
+      this.isMultiCity = false;
+      //this.flightFormGroup.controls.city.setValidators([Validators.required]);
+      //this.flightFormGroup.controls.city.updateValueAndValidity();
+    } else if (e.target.value === '2') {
+      this.isOneway = false;
+      this.isRoundTrip = true;
+      this.isMultiCity = false;
+    } else if (e.target.value === '3') {
+      this.isOneway = false;
+      this.isRoundTrip = false;
+      this.isMultiCity = true;
+    }
+  }
+
+  onFlightSubmit() {    
     this.searchResult = {};
-    let journeyType = this.flightFormGroup.controls.journeyType.value;
-    let departureDate = this.flightFormGroup.controls.departureDate.value
-      ? this.getClientFormattedDate(
-          this.flightFormGroup.controls.departureDate.value
-        )
-      : '';
-    let returnDate = this.flightFormGroup.controls.returnDate.value
-      ? this.getClientFormattedDate(
-          this.flightFormGroup.controls.returnDate.value
-        )
-      : '';
+    let journeyType = this.flightFormGroup.controls.journeyType.value; 
+    let flyingFrom = '';
+    let flyingTo = ''; 
+    let departureDate = '';
+    let returnDate = '';      
+
+    if (!this.isMultiCity && this.cityArray.value.length == 1) {
+      this.cityArray.value.forEach((city: any) => {
+        flyingFrom = city.flyingFrom;
+        flyingTo = city.flyingTo;
+        departureDate = city.departureDate
+          ? moment(city.departureDate).format('YYYY-MM-DD').toString()
+          : '';
+        returnDate = city.returnDate
+          ? moment(city.returnDate).format('YYYY-MM-DD').toString()
+          : '';;
+      });
+    }
+    console.log(departureDate);
     let noOfAdult = this.flightFormGroup.controls.noOfAdult.value
       ? +this.flightFormGroup.controls.noOfAdult.value
       : 0;
@@ -70,11 +119,9 @@ export class OneWayAirComponent implements OnInit {
       : 0;
     let noOfInfant = this.flightFormGroup.controls.noOfInfant.value
       ? +this.flightFormGroup.controls.noOfInfant.value
-      : 0;
-    let flyingFrom = this.flightFormGroup.controls.flyingFrom.value;
-    let flyingTo = this.flightFormGroup.controls.flyingTo.value;
+      : 0;    
     let classType = this.flightFormGroup.controls.classType.value;
-    
+
     let airSearchModel = {
       JourneyType: journeyType,
       Origin: flyingFrom,
@@ -89,6 +136,7 @@ export class OneWayAirComponent implements OnInit {
     console.log(airSearchModel);
     this.oneWayAirService.postOneWayAir(airSearchModel).subscribe(
       (response) => {
+        console.log(response);
         if (response) {
           this.searchResult = response;
           console.log(this.searchResult);
