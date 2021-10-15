@@ -12,12 +12,18 @@ import { resourceServerUrl } from '../shared/app-constant';
   providedIn: 'root',
 })
 export class OneWayAirService {
-  private postOneWayAirURI: string = `${resourceServerUrl}air/multipleSearchAir`;
+  private postMultipleSearchAirURI: string = `${resourceServerUrl}air/multipleSearchAir`;
+  private postMultipleSearchAirMulticityURI: string = `${resourceServerUrl}air/multipleSearchAirMulticity`;
 
   constructor(private http: HttpClient) {}
 
-  postOneWayAir(model: any) {
-    return this.http.post(this.postOneWayAirURI, model, {
+  postMultipleSearchAir(model: any) {
+    return this.http.post(this.postMultipleSearchAirURI, model, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json'),
+    });
+  }
+  postMultipleSearchAirMulticityAir(model: any) {
+    return this.http.post(this.postMultipleSearchAirMulticityURI, model, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
     });
   }

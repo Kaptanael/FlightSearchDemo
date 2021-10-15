@@ -65,11 +65,11 @@ export class OneWayAirComponent implements OnInit {
     }
   };
 
-  changeJourneyType(e: any) {    
+  changeJourneyType(e: any) {
     this.clearFormArray(this.cityArray);
-    this.addCity(); 
+    this.addCity();
     this.searchResult = {};
-    if (e.target.value === '1') {      
+    if (e.target.value === '1') {
       this.isOneway = true;
       this.isRoundTrip = false;
       this.isMultiCity = false;
@@ -79,7 +79,7 @@ export class OneWayAirComponent implements OnInit {
         cityGroup.controls['returnDate'].setValidators();
         cityGroup.controls['returnDate'].updateValueAndValidity();
       }
-    } else if (e.target.value === '2') {      
+    } else if (e.target.value === '2') {
       this.isOneway = false;
       this.isRoundTrip = true;
       this.isMultiCity = false;
@@ -121,9 +121,7 @@ export class OneWayAirComponent implements OnInit {
           ? moment(city.returnDate).format('YYYY-MM-DD').toString()
           : '';
       });
-    }
-    if (this.isMultiCity && this.cityArray.value.length > 0) {
-    }
+    }   
 
     let noOfAdult = this.flightFormGroup.controls.noOfAdult.value
       ? +this.flightFormGroup.controls.noOfAdult.value
@@ -134,33 +132,74 @@ export class OneWayAirComponent implements OnInit {
     let noOfInfant = this.flightFormGroup.controls.noOfInfant.value
       ? +this.flightFormGroup.controls.noOfInfant.value
       : 0;
-    let classType = this.flightFormGroup.controls.classType.value;
-
-    let airSearchModel = {
-      JourneyType: journeyType,
-      Origin: flyingFrom,
-      Destination: flyingTo,
-      DepartureDate: departureDate,
-      ReturnDate: returnDate,
-      ClassType: classType,
-      NoOfInfant: noOfInfant,
-      NoOfChildren: noOfChild,
-      NoOfAdult: noOfAdult,
-    };
-    console.log(airSearchModel);
-    this.oneWayAirService.postOneWayAir(airSearchModel).subscribe(
-      (response) => {
-        console.log(response);
-        if (response) {
-          this.searchResult = response;
-          console.log(this.searchResult);
-        }
-      },
-      (error: HttpErrorResponse) => {
-        console.log(error);
-      },
-      () => {}
-    );
+    let classType = this.flightFormGroup.controls.classType.value;    
+    
+    if (this.isOneway || this.isRoundTrip) {
+      let airSearchModel = {
+        JourneyType: journeyType,
+        Origin: flyingFrom,
+        Destination: flyingTo,
+        DepartureDate: departureDate,
+        ReturnDate: returnDate,
+        ClassType: classType,
+        NoOfInfant: noOfInfant,
+        NoOfChildren: noOfChild,
+        NoOfAdult: noOfAdult,
+      };
+      console.log(airSearchModel);
+      this.oneWayAirService.postMultipleSearchAir(airSearchModel).subscribe(
+        (response) => {
+          console.log(response);
+          if (response) {
+            this.searchResult = response;
+            console.log(this.searchResult);
+          }
+        },
+        (error: HttpErrorResponse) => {
+          console.log(error);
+        },
+        () => {}
+      );
+    }
+    if (this.isMultiCity) {
+      let airSearchMulticityModel = {
+        Adults: 1,
+        Childrens: 0,
+        Infants: 0,
+        ClassType: 'Economy',
+        JourneyType: 3,
+        Multicities: {
+          '0origin': 'DAC',
+          '0destination': 'CCU',
+          '0DepartureDate': '2021-10-30',
+          '1origin': 'CCU',
+          '1destination': 'BOM',
+          '1DepartureDate': '2021-11-30',
+          adults1: 1,
+          children1: 0,
+          infants1: 0,
+          classType: 'Economy',
+        },
+        Flex: null,
+        IsSpecialTexRedumtion: true,
+      };
+      console.log(airSearchMulticityModel);
+      this.oneWayAirService
+        .postMultipleSearchAirMulticityAir(airSearchMulticityModel)
+        .subscribe(
+          (response) => {
+            console.log(response);
+            if (response) {
+              this.searchResult = response;
+              console.log(this.searchResult);
+            }
+          },
+          (error: HttpErrorResponse) => {
+            console.log(error);
+          },
+          () => {}
+        );
+    }
   }
 
   // onOneWayAirClick() {
