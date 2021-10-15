@@ -57,38 +57,47 @@ export class OneWayAirComponent implements OnInit {
 
   get cityArray() {
     return <FormArray>this.flightFormGroup.get('city');
-  }  
+  }
+
+  clearFormArray = (formArray: FormArray) => {
+    while (formArray.length !== 0) {
+      formArray.removeAt(0);
+    }
+  };
 
   changeJourneyType(e: any) {
-    if (e.target.value === '1') {
+    this.clearFormArray(this.cityArray);
+    this.addCity(); 
+    if (e.target.value === '1') {      
       this.isOneway = true;
       this.isRoundTrip = false;
       this.isMultiCity = false;
-      let cityGroupItems = (this.flightFormGroup.controls['city'] as any).controls;      
-      for (let cityGroup of cityGroupItems) { 
+      let cityGroupItems = (this.flightFormGroup.controls['city'] as any)
+        .controls;
+      for (let cityGroup of cityGroupItems) {
         cityGroup.controls['returnDate'].setValidators();
         cityGroup.controls['returnDate'].updateValueAndValidity();
-      }      
-    } else if (e.target.value === '2') {
+      }
+    } else if (e.target.value === '2') {      
       this.isOneway = false;
       this.isRoundTrip = true;
       this.isMultiCity = false;
       let cityGroupItems = (this.flightFormGroup.controls['city'] as any)
         .controls;
-      for (let cityGroup of cityGroupItems) {        
+      for (let cityGroup of cityGroupItems) {
         cityGroup.controls['returnDate'].setValidators([Validators.required]);
         cityGroup.controls['returnDate'].updateValueAndValidity();
-      }   
+      }
     } else if (e.target.value === '3') {
       this.isOneway = false;
       this.isRoundTrip = false;
       this.isMultiCity = true;
       let cityGroupItems = (this.flightFormGroup.controls['city'] as any)
         .controls;
-      for (let cityGroup of cityGroupItems) {        
+      for (let cityGroup of cityGroupItems) {
         cityGroup.controls['returnDate'].setValidators();
         cityGroup.controls['returnDate'].updateValueAndValidity();
-      }   
+      }
     }
   }
 
