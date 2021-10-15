@@ -29,7 +29,7 @@ export class OneWayAirComponent implements OnInit {
 
   createFlightForm() {
     this.flightFormGroup = this.fb.group({
-      journeyType: ['1', [Validators.required]],
+      journeyType: ['', [Validators.required]],
       noOfAdult: ['0'],
       noOfChild: ['0'],
       noOfInfant: ['0'],
@@ -40,10 +40,10 @@ export class OneWayAirComponent implements OnInit {
 
   addCityGroup() {
     return this.fb.group({
-      departureDate: [],
-      returnDate: [],
-      flyingFrom: ['DAC'],
-      flyingTo: ['CXB'],
+      departureDate: ['', [Validators.required]],
+      returnDate: [''],
+      flyingFrom: ['DAC', [Validators.required]],
+      flyingTo: ['CXB', [Validators.required]],
     });
   }
 
@@ -57,46 +57,68 @@ export class OneWayAirComponent implements OnInit {
 
   get cityArray() {
     return <FormArray>this.flightFormGroup.get('city');
-  }
-
-  getClientFormattedDate(value: string): string {
-    if (value) {
-      let dateObj = new Date(value);
-      let month = dateObj.getUTCMonth() + 1;
-      let day = dateObj.getUTCDate() + 1;
-      let year = dateObj.getUTCFullYear();
-
-      return year + '-' + month + '-' + day;
-    }
-    return '';
-  }
+  }  
 
   changeJourneyType(e: any) {
     if (e.target.value === '1') {
-      console.log(this.flightFormGroup.controls.city);
       this.isOneway = true;
       this.isRoundTrip = false;
       this.isMultiCity = false;
-      //this.flightFormGroup.controls.city.setValidators([Validators.required]);
-      //this.flightFormGroup.controls.city.updateValueAndValidity();
+      // let cityGroupItems = (this.flightFormGroup.controls['city'] as any).controls;      
+      // for (let cityGroup of cityGroupItems) {
+      //   cityGroup.controls['flyingFrom'].setValidators([Validators.required]);
+      //   cityGroup.controls['flyingFrom'].updateValueAndValidity();
+      //   cityGroup.controls['flyingTo'].setValidators([Validators.required]);
+      //   cityGroup.controls['flyingTo'].updateValueAndValidity();
+      //   cityGroup.controls['departureDate'].setValidators([
+      //     Validators.required,
+      //   ]);
+      //   cityGroup.controls['departureDate'].updateValueAndValidity();
+      // }      
     } else if (e.target.value === '2') {
       this.isOneway = false;
       this.isRoundTrip = true;
       this.isMultiCity = false;
+      let cityGroupItems = (this.flightFormGroup.controls['city'] as any)
+        .controls;
+      for (let cityGroup of cityGroupItems) {
+        // cityGroup.controls['flyingFrom'].setValidators([Validators.required]);
+        // cityGroup.controls['flyingFrom'].updateValueAndValidity();
+        // cityGroup.controls['flyingTo'].setValidators([Validators.required]);
+        // cityGroup.controls['flyingTo'].updateValueAndValidity();
+        // cityGroup.controls['departureDate'].setValidators([
+        //   Validators.required,
+        // ]);
+        // cityGroup.controls['departureDate'].updateValueAndValidity();
+        cityGroup.controls['returnDate'].setValidators([Validators.required]);
+        cityGroup.controls['returnDate'].updateValueAndValidity();
+      }   
     } else if (e.target.value === '3') {
       this.isOneway = false;
       this.isRoundTrip = false;
       this.isMultiCity = true;
+      // let cityGroupItems = (this.flightFormGroup.controls['city'] as any)
+      //   .controls;
+      // for (let cityGroup of cityGroupItems) {
+      //   cityGroup.controls['flyingFrom'].setValidators([Validators.required]);
+      //   cityGroup.controls['flyingFrom'].updateValueAndValidity();
+      //   cityGroup.controls['flyingTo'].setValidators([Validators.required]);
+      //   cityGroup.controls['flyingTo'].updateValueAndValidity();
+      //   cityGroup.controls['departureDate'].setValidators([
+      //     Validators.required,
+      //   ]);
+      //   cityGroup.controls['departureDate'].updateValueAndValidity();
+      // }   
     }
   }
 
-  onFlightSubmit() {    
+  onFlightSubmit() {
     this.searchResult = {};
-    let journeyType = this.flightFormGroup.controls.journeyType.value; 
+    let journeyType = this.flightFormGroup.controls.journeyType.value;
     let flyingFrom = '';
-    let flyingTo = ''; 
+    let flyingTo = '';
     let departureDate = '';
-    let returnDate = '';      
+    let returnDate = '';
 
     if (!this.isMultiCity && this.cityArray.value.length == 1) {
       this.cityArray.value.forEach((city: any) => {
@@ -107,10 +129,12 @@ export class OneWayAirComponent implements OnInit {
           : '';
         returnDate = city.returnDate
           ? moment(city.returnDate).format('YYYY-MM-DD').toString()
-          : '';;
+          : '';
       });
     }
-    console.log(departureDate);
+    if (this.isMultiCity && this.cityArray.value.length > 0) {
+    }
+
     let noOfAdult = this.flightFormGroup.controls.noOfAdult.value
       ? +this.flightFormGroup.controls.noOfAdult.value
       : 0;
@@ -119,7 +143,7 @@ export class OneWayAirComponent implements OnInit {
       : 0;
     let noOfInfant = this.flightFormGroup.controls.noOfInfant.value
       ? +this.flightFormGroup.controls.noOfInfant.value
-      : 0;    
+      : 0;
     let classType = this.flightFormGroup.controls.classType.value;
 
     let airSearchModel = {
