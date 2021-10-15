@@ -29,7 +29,7 @@ export class OneWayAirComponent implements OnInit {
 
   createFlightForm() {
     this.flightFormGroup = this.fb.group({
-      journeyType: ['', [Validators.required]],
+      journeyType: ['1', [Validators.required]],
       noOfAdult: ['0'],
       noOfChild: ['0'],
       noOfInfant: ['0'],
@@ -64,32 +64,18 @@ export class OneWayAirComponent implements OnInit {
       this.isOneway = true;
       this.isRoundTrip = false;
       this.isMultiCity = false;
-      // let cityGroupItems = (this.flightFormGroup.controls['city'] as any).controls;      
-      // for (let cityGroup of cityGroupItems) {
-      //   cityGroup.controls['flyingFrom'].setValidators([Validators.required]);
-      //   cityGroup.controls['flyingFrom'].updateValueAndValidity();
-      //   cityGroup.controls['flyingTo'].setValidators([Validators.required]);
-      //   cityGroup.controls['flyingTo'].updateValueAndValidity();
-      //   cityGroup.controls['departureDate'].setValidators([
-      //     Validators.required,
-      //   ]);
-      //   cityGroup.controls['departureDate'].updateValueAndValidity();
-      // }      
+      let cityGroupItems = (this.flightFormGroup.controls['city'] as any).controls;      
+      for (let cityGroup of cityGroupItems) { 
+        cityGroup.controls['returnDate'].setValidators();
+        cityGroup.controls['returnDate'].updateValueAndValidity();
+      }      
     } else if (e.target.value === '2') {
       this.isOneway = false;
       this.isRoundTrip = true;
       this.isMultiCity = false;
       let cityGroupItems = (this.flightFormGroup.controls['city'] as any)
         .controls;
-      for (let cityGroup of cityGroupItems) {
-        // cityGroup.controls['flyingFrom'].setValidators([Validators.required]);
-        // cityGroup.controls['flyingFrom'].updateValueAndValidity();
-        // cityGroup.controls['flyingTo'].setValidators([Validators.required]);
-        // cityGroup.controls['flyingTo'].updateValueAndValidity();
-        // cityGroup.controls['departureDate'].setValidators([
-        //   Validators.required,
-        // ]);
-        // cityGroup.controls['departureDate'].updateValueAndValidity();
+      for (let cityGroup of cityGroupItems) {        
         cityGroup.controls['returnDate'].setValidators([Validators.required]);
         cityGroup.controls['returnDate'].updateValueAndValidity();
       }   
@@ -97,18 +83,12 @@ export class OneWayAirComponent implements OnInit {
       this.isOneway = false;
       this.isRoundTrip = false;
       this.isMultiCity = true;
-      // let cityGroupItems = (this.flightFormGroup.controls['city'] as any)
-      //   .controls;
-      // for (let cityGroup of cityGroupItems) {
-      //   cityGroup.controls['flyingFrom'].setValidators([Validators.required]);
-      //   cityGroup.controls['flyingFrom'].updateValueAndValidity();
-      //   cityGroup.controls['flyingTo'].setValidators([Validators.required]);
-      //   cityGroup.controls['flyingTo'].updateValueAndValidity();
-      //   cityGroup.controls['departureDate'].setValidators([
-      //     Validators.required,
-      //   ]);
-      //   cityGroup.controls['departureDate'].updateValueAndValidity();
-      // }   
+      let cityGroupItems = (this.flightFormGroup.controls['city'] as any)
+        .controls;
+      for (let cityGroup of cityGroupItems) {        
+        cityGroup.controls['returnDate'].setValidators();
+        cityGroup.controls['returnDate'].updateValueAndValidity();
+      }   
     }
   }
 
