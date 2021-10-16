@@ -57,10 +57,10 @@
               </div>
             </div>
             <div formArrayName="city">
-              <div                
+              <div
                 *ngFor="let group of cityArray.controls; let i = index"
                 [formGroupName]="i"
-              >                
+              >
                 <div class="row">
                   <div class="col-md-3">
                     <div class="form-group">
@@ -134,12 +134,16 @@
                       </p-calendar>
                     </div>
                   </div>
-                  <div class="col-md-1" style="margin-top: 36px;" *ngIf="cityArray.length > 1 && i > 0 && isMultiCity">
+                  <div
+                    class="col-md-1"
+                    style="margin-top: 36px"
+                    *ngIf="cityArray.length > 1 && i > 0 && isMultiCity"
+                  >
                     <button type="button" (click)="removeCity(i)">
                       <i class="fa fa-minus" aria-hidden="true"></i>
                     </button>
                   </div>
-                </div>                
+                </div>
               </div>
             </div>
             <div class="row" *ngIf="isMultiCity">
@@ -248,8 +252,26 @@
     </div>
   </div>
   <div class="row">
+    <div class="col-md-12">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Trip Type</th>
+            <th scope="col">Refundable</th>
+            <th scope="col">Bookable</th>            
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let payload of flightSearchPayloads">
+            <td>{{ payload.TripType }}</td>
+            <td>{{ payload.IsRefundable === true ? "Yes" : "No" }}</td>
+            <td>{{ payload.IsBookable === true ? "Yes" : "No" }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <code>
-      <pre>{{ searchResult | json }}</pre>
+      <pre>{{ flightSearchResponse | json }}</pre>
     </code>
   </div>
 </div>

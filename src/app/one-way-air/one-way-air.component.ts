@@ -4,6 +4,11 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { OneWayAirService } from '../_services/one-way-air.service';
 import * as moment from 'moment';
+import {
+  AirSearchResponse,
+  Payload,
+  Onward,
+} from '../_models/air-search-response.model';
 
 @Component({
   selector: 'app-one-way-air',
@@ -12,10 +17,12 @@ import * as moment from 'moment';
 })
 export class OneWayAirComponent implements OnInit {
   flightFormGroup!: FormGroup;
-  searchResult: any;
+  flightSearchResponse!: AirSearchResponse;
   isOneway: boolean = false;
   isRoundTrip: boolean = false;
   isMultiCity: boolean = false;
+  flightSearchPayloads: Payload[] = [];
+  flightSearchOnwards: Onward[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -29,7 +36,7 @@ export class OneWayAirComponent implements OnInit {
 
   createFlightForm() {
     this.flightFormGroup = this.fb.group({
-      journeyType: ['1', [Validators.required]],
+      journeyType: ['', [Validators.required]],
       noOfAdult: ['0'],
       noOfChild: ['0'],
       noOfInfant: ['0'],
@@ -68,7 +75,7 @@ export class OneWayAirComponent implements OnInit {
   changeJourneyType(e: any) {
     this.clearFormArray(this.cityArray);
     this.addCity();
-    this.searchResult = {};
+    this.flightSearchResponse = {} as AirSearchResponse;
     if (e.target.value === '1') {
       this.isOneway = true;
       this.isRoundTrip = false;
@@ -103,7 +110,7 @@ export class OneWayAirComponent implements OnInit {
   }
 
   onFlightSubmit() {
-    this.searchResult = {};
+    this.flightSearchResponse = {} as AirSearchResponse;
     let journeyType = this.flightFormGroup.controls.journeyType.value;
     let flyingFrom = '';
     let flyingTo = '';
@@ -121,7 +128,7 @@ export class OneWayAirComponent implements OnInit {
           ? moment(city.returnDate).format('YYYY-MM-DD').toString()
           : '';
       });
-    }   
+    }
 
     let noOfAdult = this.flightFormGroup.controls.noOfAdult.value
       ? +this.flightFormGroup.controls.noOfAdult.value
@@ -132,8 +139,8 @@ export class OneWayAirComponent implements OnInit {
     let noOfInfant = this.flightFormGroup.controls.noOfInfant.value
       ? +this.flightFormGroup.controls.noOfInfant.value
       : 0;
-    let classType = this.flightFormGroup.controls.classType.value;    
-    
+    let classType = this.flightFormGroup.controls.classType.value;
+
     if (this.isOneway || this.isRoundTrip) {
       let airSearchModel = {
         JourneyType: journeyType,
@@ -149,10 +156,10 @@ export class OneWayAirComponent implements OnInit {
       console.log(airSearchModel);
       this.oneWayAirService.postMultipleSearchAir(airSearchModel).subscribe(
         (response) => {
-          console.log(response);
           if (response) {
-            this.searchResult = response;
-            console.log(this.searchResult);
+            this.flightSearchResponse = response as AirSearchResponse;
+            this.flightSearchPayloads = this.flightSearchResponse.Payload;            
+            console.log(this.flightSearchResponse);
           }
         },
         (error: HttpErrorResponse) => {
@@ -190,8 +197,9 @@ export class OneWayAirComponent implements OnInit {
           (response) => {
             console.log(response);
             if (response) {
-              this.searchResult = response;
-              console.log(this.searchResult);
+              this.flightSearchResponse = response as AirSearchResponse;
+              this.flightSearchPayloads = this.flightSearchResponse.Payload;
+              console.log(this.flightSearchResponse);
             }
           },
           (error: HttpErrorResponse) => {
